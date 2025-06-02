@@ -63,7 +63,7 @@ max_f1 = -np.inf
 for epoch in range(args.num_epochs):
     # For each batch in the dataloader
     for batch_idx, data in enumerate(train_dataloader):
-        if batch_idx != 0 and (batch_idx % 500 == 0 or batch_idx == len(train_dataloader) - 1):
+        if batch_idx != 0 and (batch_idx % 1000 == 0 or batch_idx == len(train_dataloader) - 1):
             output_dir = os.path.join(logdir, 'vis')
             os.makedirs(output_dir, exist_ok=True)
             vis.plot_cuts_iso(net.decoder, save_path=os.path.join(output_dir, str(batch_idx) + '.html'))
@@ -82,11 +82,12 @@ for epoch in range(args.num_epochs):
                     mesh = res_dict['mesh']
                     mesh = utils.normalize_mesh_export(mesh)
                 else:
-                    mesh = utils.implicit2mesh(net.decoder, None,
+                    mesh, implicit_values = utils.implicit2mesh(net.decoder, None,
                                                args.grid_res,
                                                translate=-cp,
                                                scale=1 / scale,
                                                get_mesh=True, device=device, bbox=bbox)
+                    print(implicit_values)
 
                 pred_mesh = mesh.copy()
                 output_ply_filepath = os.path.join(output_dir,

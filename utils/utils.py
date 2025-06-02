@@ -575,7 +575,7 @@ def implicit2mesh(decoder, mods, grid_res, translate=[0., 0., 0.], scale=1, get_
         if get_mesh:
             mesh = trimesh.Trimesh(verts, faces, vertex_normals=normals, vertex_colors=values, validate=True)
         mesh_list.append(mesh)
-    return mesh_list[0]
+    return mesh_list[0], z
 
 
 # @nb.jit()
