@@ -768,7 +768,7 @@ def udf2mesh(decoder, latent, grid_res, translate=[0., 0., 0.], scale=1, get_mes
     res_dict['mesh'] = mesh
     res_dict['z'] = z
     res_dict['n'] = n
-    return res_dict
+    return res_dict, z
 
 
 def convert_xyz_to_ply_with_noise(file_path, noise=None):

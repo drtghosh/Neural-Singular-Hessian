@@ -74,7 +74,7 @@ for epoch in range(args.num_epochs):
                 cp, scale, bbox = train_set.cp, train_set.scale, train_set.bbox
                 mesh_dict = None
                 if args.udf:
-                    res_dict = utils.udf2mesh(net.decoder, None,
+                    res_dict, implicit_values = utils.udf2mesh(net.decoder, None,
                                               args.grid_res,
                                               translate=-cp,
                                               scale=1 / scale,
@@ -87,11 +87,16 @@ for epoch in range(args.num_epochs):
                                                translate=-cp,
                                                scale=1 / scale,
                                                get_mesh=True, device=device, bbox=bbox)
-                    print(implicit_values)
 
                 pred_mesh = mesh.copy()
+                pred_implicit = implicit_values.copy()
                 output_ply_filepath = os.path.join(output_dir,
                                                    shapename + '_iter_{}.ply'.format(batch_idx))
+
+                output_npy_path = os.path.join(logdir,
+                                            shapename + '_iter_{}.npy'.format(batch_idx))
+                with open(output_npy_path, 'wb') as f:
+                    np.save(f, pred_implicit)
 
                 print('Saving to ', output_ply_filepath)
                 mesh.export(output_ply_filepath)
